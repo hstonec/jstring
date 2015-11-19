@@ -21,9 +21,9 @@ main(int atgc, char *argv[])
 		   jstr_length(jstr),
 		   jstr->capacity);
 	
-	sub = jstr_substr(jstr, 6, 0);
+	sub = jstr_substr(jstr, 0, 7);
 	
-	
+	printf("%d\n\n", jstr_equals(jstr, sub));
 	
 	printf("[%s], length: %ld, capacity: %ld\n", 
 	       jstr_cstr(sub),

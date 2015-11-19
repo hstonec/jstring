@@ -93,6 +93,15 @@ jstr_substr(JSTRING *jstr, size_t index, size_t len)
 	return jstr_create_from_arr(jstr->str + index, len);
 }
 
+int
+jstr_equals(JSTRING *jstr1, JSTRING *jstr2)
+{
+	check_ptr(jstr1);
+	check_ptr(jstr2);
+	
+	return strcmp(jstr_cstr(jstr1), jstr_cstr(jstr2));
+}
+
 void
 jstr_concat(JSTRING *jstr, char *str)
 {
