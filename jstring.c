@@ -40,10 +40,10 @@ do { \
 	} \
 } while(0)
 
-JSTRING *jstr_create_from_arr(char *, size_t);
-void jstr_realloc(JSTRING *);
-void check_index(JSTRING *, size_t);
-void check_ptr(void *);
+static JSTRING *jstr_create_from_arr(char *, size_t);
+static void jstr_realloc(JSTRING *);
+static void check_index(JSTRING *, size_t);
+static void check_ptr(void *);
 
 JSTRING *
 jstr_create(char *str)
@@ -93,13 +93,25 @@ jstr_substr(JSTRING *jstr, size_t index, size_t len)
 	return jstr_create_from_arr(jstr->str + index, len);
 }
 
-int
-jstr_equals(JSTRING *jstr1, JSTRING *jstr2)
+void
+jstr_trunc(JSTRING *jstr, size_t index, size_t len)
 {
-	check_ptr(jstr1);
-	check_ptr(jstr2);
+	size_t i;
 	
-	return strcmp(jstr_cstr(jstr1), jstr_cstr(jstr2));
+	check_ptr(jstr);
+	check_index(jstr, index);
+	
+	if (index + len > jstr->length) {
+		(void)fprintf(stderr, 
+		      "jstring: length out of range\n");
+		exit(EXIT_FAILURE);
+	}
+	
+	if (index != 0)
+		for (i = 0; i < len; i++, index++)
+			jstr->str[i] = jstr->str[index];
+	jstr->str[len] = '\0';
+	jstr->length = len;
 }
 
 void
@@ -128,6 +140,15 @@ jstr_append(JSTRING *jstr, char c)
 	
 }
 
+int
+jstr_equals(JSTRING *jstr1, JSTRING *jstr2)
+{
+	check_ptr(jstr1);
+	check_ptr(jstr2);
+	
+	return strcmp(jstr_cstr(jstr1), jstr_cstr(jstr2));
+}
+
 void
 jstr_free(JSTRING *jstr)
 {
@@ -141,7 +162,7 @@ jstr_free(JSTRING *jstr)
 	
 }
 
-JSTRING *
+static JSTRING *
 jstr_create_from_arr(char *arr, size_t len)
 {
 	
@@ -160,7 +181,7 @@ jstr_create_from_arr(char *arr, size_t len)
 	return jstr;
 }
 
-void
+static void
 jstr_realloc(JSTRING *jstr)
 {
 	
@@ -172,7 +193,7 @@ jstr_realloc(JSTRING *jstr)
 	
 }
 
-void
+static void
 check_ptr(void *ptr)
 {
 	if (ptr == NULL) {
@@ -181,7 +202,7 @@ check_ptr(void *ptr)
 	}
 }
 
-void
+static void
 check_index(JSTRING *jstr, size_t index)
 {
 	if (index >= jstr->length) {
