@@ -121,28 +121,42 @@ jstr_trunc(JSTRING *jstr, size_t index, size_t len)
 
 void jstr_insert(JSTRING *jstr, size_t index, char *str)
 {
-	size_t i;
-	size_t str_len, ori_len;
+	size_t i, move_index;
+	size_t str_len;
 	
 	check_ptr(jstr);
-	check_index(jstr, index);
 	check_ptr(str);
+	
+	if (index > jstr->length) {
+		(void)fprintf(stderr, 
+		      "jstring: index [%ld] out of range [0, %ld]\n",
+			  index,
+			  jstr->length);
+		exit(EXIT_FAILURE);
+	}
 	
 	str_len = strlen(str);
 	if (str_len == 0)
 		return;
 	
-	ori_len = jstr->length;
+	if (index == jstr->length) {
+		jstr_concat(jstr, str);
+		return;
+	}
+	
+	move_index = jstr->length;
+	
 	jstr->length += str_len;
 	jstr_realloc(jstr);
 	
-	for (i = jstr->length; ori_len > 0; i--, ori_len--)
-		jstr->str[i] = jstr->str[ori_len];
-	jstr->str[i] = jstr->str[0];
-	i--;
+	for (i = jstr->length; move_index > index; i--, move_index--)
+		jstr->str[i] = jstr->str[move_index];
+	/* avoid index == 0, move_index-- will be a big number */
+	jstr->str[i] = jstr->str[move_index]; 
 	
-	for (i = 0; i < str_len; i++)
-		jstr->str[i] = str[i];
+	
+	for (i = 0; i < str_len; i++, index++)
+		jstr->str[index] = str[i];
 }
 
 void

@@ -14,7 +14,9 @@ main(int atgc, char *argv[])
 {
 	JSTRING *jstr;
 	JSTRING *sub;
-	jstr = jstr_create("abcdefg");
+	jstr = jstr_create("");
+	jstr_insert(jstr, 0, "abcdefg");
+	
 	
 	printf("[%s], length: %ld, capacity: %ld\n", 
 	       jstr_cstr(jstr),
@@ -32,6 +34,9 @@ main(int atgc, char *argv[])
 		   jstr_length(sub),
 		   sub->capacity);
 	
+	jstr_insert(jstr, 7, "123");
+	
+	jstr_insert(jstr, 1, "123");
 	jstr_insert(jstr, 0, "123");
 	
 	jstr_append(sub, '!');
