@@ -99,7 +99,12 @@ jstr_trunc(JSTRING *jstr, size_t index, size_t len)
 	size_t i;
 	
 	check_ptr(jstr);
-	check_index(jstr, index);
+	
+	if (index >= jstr->length) {
+		jstr->str[0] = '\0';
+		jstr->length = 0;
+		return;
+	}
 	
 	if (index + len > jstr->length) {
 		(void)fprintf(stderr, 

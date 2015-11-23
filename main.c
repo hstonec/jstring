@@ -23,7 +23,7 @@ main(int atgc, char *argv[])
 	
 	sub = jstr_substr(jstr, 0, 7);
 	
-	jstr_trunc(sub, 1, 4);
+	jstr_trunc(sub, 7, 4);
 	
 	printf("%d\n\n", jstr_equals(jstr, sub));
 	
