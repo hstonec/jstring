@@ -114,6 +114,32 @@ jstr_trunc(JSTRING *jstr, size_t index, size_t len)
 	jstr->length = len;
 }
 
+void jstr_insert(JSTRING *jstr, size_t index, char *str)
+{
+	size_t i;
+	size_t str_len, ori_len;
+	
+	check_ptr(jstr);
+	check_index(jstr, index);
+	check_ptr(str);
+	
+	str_len = strlen(str);
+	if (str_len == 0)
+		return;
+	
+	ori_len = jstr->length;
+	jstr->length += str_len;
+	jstr_realloc(jstr);
+	
+	for (i = jstr->length; ori_len > 0; i--, ori_len--)
+		jstr->str[i] = jstr->str[ori_len];
+	jstr->str[i] = jstr->str[0];
+	i--;
+	
+	for (i = 0; i < str_len; i++)
+		jstr->str[i] = str[i];
+}
+
 void
 jstr_concat(JSTRING *jstr, char *str)
 {

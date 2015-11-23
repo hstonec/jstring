@@ -32,7 +32,7 @@ main(int atgc, char *argv[])
 		   jstr_length(sub),
 		   sub->capacity);
 	
-	jstr_concat(sub, jstr_cstr(jstr));
+	jstr_insert(jstr, 0, "123");
 	
 	jstr_append(sub, '!');
 	jstr_append(sub, '!');
