@@ -129,7 +129,7 @@ void jstr_insert(JSTRING *jstr, size_t index, char *str)
 	
 	if (index > jstr->length) {
 		(void)fprintf(stderr, 
-		      "jstring: index [%ld] out of range [0, %ld]\n",
+		      "jstring: index [%zu] out of range [0, %zu]\n",
 			  index,
 			  jstr->length);
 		exit(EXIT_FAILURE);
@@ -186,12 +186,12 @@ jstr_append(JSTRING *jstr, char c)
 }
 
 int
-jstr_equals(JSTRING *jstr1, JSTRING *jstr2)
+jstr_equals(JSTRING *jstr, char *str)
 {
-	check_ptr(jstr1);
-	check_ptr(jstr2);
+	check_ptr(jstr);
+	check_ptr(str);
 	
-	return strcmp(jstr_cstr(jstr1), jstr_cstr(jstr2));
+	return strcmp(jstr_cstr(jstr), str);
 }
 
 void
@@ -252,7 +252,7 @@ check_index(JSTRING *jstr, size_t index)
 {
 	if (index >= jstr->length) {
 		(void)fprintf(stderr, 
-		      "jstring: index [%ld] out of range [0, %ld]\n",
+		      "jstring: index [%zu] out of range [0, %zu]\n",
 			  index,
 			  jstr->length - 1);
 		exit(EXIT_FAILURE);

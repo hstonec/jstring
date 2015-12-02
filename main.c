@@ -13,44 +13,14 @@ int
 main(int atgc, char *argv[])
 {
 	JSTRING *jstr;
-	JSTRING *sub;
-	jstr = jstr_create("");
-	jstr_insert(jstr, 0, "abcdefg");
+	JSTRING *jstr2;
 	
+	jstr = jstr_create("/hw4/../hw4/../hw4/././");
 	
-	printf("[%s], length: %ld, capacity: %ld\n", 
-	       jstr_cstr(jstr),
-		   jstr_length(jstr),
-		   jstr->capacity);
+	jstr2 = jstr_create("/hw4/../hw4/../hw4/././");
 	
-	sub = jstr_substr(jstr, 0, 7);
-	
-	jstr_trunc(sub, 7, 4);
-	
-	printf("%d\n\n", jstr_equals(jstr, sub));
-	
-	printf("[%s], length: %ld, capacity: %ld\n", 
-	       jstr_cstr(sub),
-		   jstr_length(sub),
-		   sub->capacity);
-	
-	jstr_insert(jstr, 7, "123");
-	
-	jstr_insert(jstr, 1, "123");
-	jstr_insert(jstr, 0, "123");
-	
-	jstr_append(sub, '!');
-	jstr_append(sub, '!');
-	jstr_append(sub, '!');
-	jstr_append(sub, '!');
-	
-	printf("[%s], length: %ld, capacity: %ld\n", 
-	       jstr_cstr(sub),
-		   jstr_length(sub),
-		   sub->capacity);
-	
-	jstr_free(sub);
 	jstr_free(jstr);
+	jstr_free(jstr2);
 	
 	return 0;
 }
